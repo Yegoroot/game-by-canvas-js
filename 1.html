@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+  </head>
+  <body>
+<canvas id="canvas" width="300" style="border:solid 1px #000" height="300"></canvas>
+<script type="text/javascript">
+    var gameEngine; // переменная ссылка на функцию которую нужно выполнять
+
+    var canvas = document.getElementById('canvas'); // обратились к элементу DOM Canvas
+    var context = canvas.getContext('2d'); // создали контекст
+
+    var x = 10,
+        y = 10;
+
+    function drawRect() {
+      context.fillStyle = '#444'; // background
+      context.clearRect(0,0, 300, 300); // очистка облости
+      context.fillRect(x, y, 50, 50); // отрисовка
+    }
+
+
+
+    // ПОЛИФИЛ ___ // функция для того чтоб при переходе на вкладку анимация продолжалась
+    var nextGameStep = (function(){
+      return  requestAnimationFrame ||
+              mozRequestAnimationFrame ||
+              msRequestAnimationFrame  ||
+              function (callback) {
+                setTimeout(callback, 1000/60);
+              };
+    })();
+
+
+    var gameEngineStart = function(callback){
+      gameEngine = callback;
+      gameEngineStep();
+    };
+
+    var gameEngineStep = function(){
+      gameEngine();
+      nextGameStep(gameEngineStep);
+    }
+
+    var setGameEngine = function(callback){
+      gameEngine = callback;
+    }
+
+
+
+    var gameLoopRight = function() {
+      drawRect(); // отрисовка
+      x+=1; // смещение по x
+      if (x>=250){
+        setGameEngine(gameLoopLeft);
+      }
+    };
+    var gameLoopLeft = function() {
+      drawRect(); // отрисовка
+      x-=1; // смещение по x
+      if (x<=0) {
+        gameEngineStart(gameLoopRight);
+      }
+    };
+
+    gameEngineStart(gameLoopRight);
+
+</script>
+  </body>
+</html>
