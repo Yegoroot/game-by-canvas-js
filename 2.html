@@ -13,7 +13,7 @@
       for (var i = 0, len = arr.length; i<len; i+=1 ){
           var source = document.createElement('source');
           source.src = arr[i];
-          audio.appendChild(source);
+          audio.appendChild(source); /* добавляем source в audio */
       };
 
       audio.volume = 1 || vol;
