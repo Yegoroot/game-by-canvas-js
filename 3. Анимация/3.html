@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>3 урок</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="100"></canvas>
+    <img src="" id="image" alt="">
+    <script type="text/javascript">
+
+
+
+  var context = document.getElementById('canvas').getContext('2d');
+  var width = 485, height = 100;
+
+//  drawImage('img1.png', 0, 70 ,70 );
+  drawImage('img1.png', 70, 30 ,40 );
+
+  function drawImage(img,  num1){
+
+          var image = document.getElementById('image');
+          image.onload = function() {
+            context.drawImage(image, 65, 0, 70, 100, 0, 0, 70, 100);
+            width = image.width;
+            height = image.height;
+
+            image.style.display ='none';
+          }
+          image.src = img;
+  }
+
+
+
+
+
+    </script>
+  </body>
+</html>
