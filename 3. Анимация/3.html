@@ -10,23 +10,37 @@
     <script type="text/javascript">
 
 
-
+/* вынесли это в глобальную область видимости, потому что у нас одна картинка и один канвас */
   var context = document.getElementById('canvas').getContext('2d');
   var width = 485, height = 100;
+  var image = document.getElementById('image');
+  var x =0;
 
-//  drawImage('img1.png', 0, 70 ,70 );
-  drawImage('img1.png', 70, 30 ,40 );
+  // drawImg('img1.png', 0 );
 
-  function drawImage(img,  num1){
 
-          var image = document.getElementById('image');
+
+var i = 1;
+setInterval(function(){
+  drawImg('img1.png', i, 30 );
+  if (i>=7) {i = 1} else {i++;}
+}, 200)
+
+
+  function drawImg(img,  num, speed){
+          num = num ? num-1 :0;
+          x+= speed ? speed : 0;
+
           image.onload = function() {
-            context.drawImage(image, 65, 0, 70, 100, 0, 0, 70, 100);
+
             width = image.width;
             height = image.height;
 
+            context.clearRect(0,0,1000,1000);
+            context.drawImage(image, num*85, 0, 85, 100, x, 0, 85, 100);
+
             image.style.display ='none';
-          }
+          };
           image.src = img;
   }
 
