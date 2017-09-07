@@ -6,9 +6,56 @@
   </head>
   <body>
     <canvas id="canvas" width="500" height="100"></canvas>
-    <img src="" id="image" alt="">
-    <script type="text/javascript">
+    <canvas id="canvas2" width="500" height="100"></canvas>
 
+<script type="text/javascript">
+  var context = document.getElementById('canvas').getContext('2d');
+  var width = 485, height = 100;
+
+
+var tip4ik = loadImage ('img1.png', 85, 100, 4);
+var tip4ik2 = loadImage ('img1.png', 85, 100, 4);
+
+setInterval(function(){
+  context.clearRect(0,0,300,300);
+  drawImage(tip4ik, 0, 0);
+  drawImage(tip4ik2, 70, 0);
+}, 200)
+
+function drawImage(img, x, y) {
+
+  if (!img.loaded) return; // если изображения не загруженны
+
+  if (img.num>= img.count) img.num = 1;
+  else img.num +=1;
+
+  context.drawImage(img.dom, img.width*(img.num-1), 0, img.width, img.height, x, y, 85, 100 );
+}
+
+
+// создаем изображение динаммически
+function loadImage (path, width, height, count) {
+  var image = document.createElement('img');
+  var result = {
+    dom: image,
+    width: width,
+    height: height,
+    count: count,
+    loader : false,
+    num: 1
+  };
+  image.onload = function(){
+    result.loaded = true;
+  };
+  image.src = path;
+
+  return result;
+}
+
+</script>
+
+    <!-- <img src="" id="image" alt="">
+    <script type="text/javascript">
 
 /* вынесли это в глобальную область видимости, потому что у нас одна картинка и один канвас */
   var context = document.getElementById('canvas').getContext('2d');
@@ -17,9 +64,6 @@
   var x =0;
 
   // drawImg('img1.png', 0 );
-
-
-
 var i = 1;
 setInterval(function(){
   drawImg('img1.png', i, 30 );
@@ -44,10 +88,6 @@ setInterval(function(){
           image.src = img;
   }
 
-
-
-
-
-    </script>
+    </script> -->
   </body>
 </html>
