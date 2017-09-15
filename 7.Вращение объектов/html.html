@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Вращение объектов</title>
+  </head>
+  <body>
+<canvas id="canvas"></canvas>
+
+<script type="text/javascript">
+/**
+ * Вращение в канвасе осуществляется только по всем у канвасу это означает, что отдельные элементы не могут вращаться в канвасе, а только
+ полностью весь канвас вращается
+ */
+
+  var canvas = document.getElementById('canvas'),
+      ctx = canvas.getContext('2d');
+
+  var width = 500,
+      height = 500;
+
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style.backgroundColor = "#D0D0D0";
+
+  var drawRect = function(x, y, w, h, a){
+    // 1) получаем центр объекта (если хотим вращать вокруг центра объекта)
+    var dx = x + w/2,
+        dy = y + h/2;
+
+    if (a) {
+      // 2) Необходимо получить градусы в радианах
+      a = a * (Math.PI / 180);
+      ctx.save(); // сохраняем конфигурацию (канваса)
+      ctx.translate(dx,dy); // сместили ось координат
+      ctx.rotate(a); // вращаем оси при помощи этой ф-ии
+      ctx.translate(-dx,-dy); // после того как повернули оси, вернули их обратно
+    }
+
+    ctx.strokeRect(x, y, w, h); // после отирсовали прямоугольник на измененном канвасе
+
+    if (a){
+      ctx.restore(); // эта ф-ия восстановления канваса
+      /** !!!  после манипуляций со сменой x,y у канваса мы возвращаем его в исходное положение  */
+    }
+
+  }
+
+  var x = 10,
+      y = 10,
+      a = 0;
+
+/* Имитация игрового процесса */
+  setInterval(function(){
+    ctx.clearRect(0, 0, width, height); // стирание канваса после отрисовки объекта
+    drawRect(x, y, 40, 40, a); // отрисовка первого прямоугольника
+    drawRect(50, 150, 40, 40, -a); // отрисовка второго прямоугольника
+    x++;
+    // y++;
+    a+=1;
+  }, 60);
+
+
+</script>
+  </body>
+</html>

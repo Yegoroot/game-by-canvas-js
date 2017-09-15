@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+<canvas id="canvas"></canvas>
+
+<script type="text/javascript">
+  var canvas = document.getElementById('canvas'),
+      ctx = canvas.getContext('2d');
+
+      var width = 500, height = 400;
+      canvas.width=width;
+      canvas.height=height;
+      canvas.style.backgroundColor = "#b8b3ff";
+
+      ctx.fillStyle = "#bd7979"; // цвет заливки
+      ctx.strokeStyle = "#507299"; // цвет рамки
+      ctx.lineWidth = 4;
+
+      var fillRect = function (x, y, w, h) {
+        ctx.fillRect(x, y, w, h); // отрисовка закрашенного прямоугольника
+      };
+
+      var strokeRect = function (x, y, w, h) {
+        ctx.strokeRect(x, y, w, h); // отрисовка НЕзакрашенного прямоугольника
+      };
+
+
+      var Rect = function (x, y, w, h){
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.selected = false;
+      };
+      Rect.prototype = {
+        draw : function (){
+          fillRect(this.x, this.y, this.w, this.h);
+        },
+        stroke : function (){
+          strokeRect(this.x, this.y, this.w, this.h);
+        },
+        select : function() {
+          this.selected = !this.selected;
+        }
+
+      };
+
+
+
+      var i = 0, rect = [];
+      for (; i<5; i++) {
+        rect.push(new Rect(50 + i * (50 + 10), 40, 50, 50) );
+      }
+
+
+      var isCursorInRect = function (x, y, rect) {
+        return x > rect.x && x < rect.x + rect.w &&
+               y > rect.y && y < rect.y + rect.h;
+
+      }
+
+      canvas.onclick = function (e) {
+        var x = e.pageX,
+            y = e.pageY;
+
+        for (i in rect) {
+          if(isCursorInRect(x, y, rect[i]))
+          rect[i].select();
+        }
+
+      }
+
+      setInterval(function(){
+       ctx.clearRect(0, 0, width, height);
+        for (i in rect) {
+          rect[i].draw();
+          if (rect[i].selected){
+            rect[i].stroke();
+          }
+        }
+      }, 30);
+
+
+</script>
+
+  </body>
+</html>
