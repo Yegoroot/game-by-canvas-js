@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+<canvas id="canvas"></canvas>
+
+<script type="text/javascript">
+  var canvas = document.getElementById('canvas'),
+  ctx = canvas.getContext('2d');
+
+  var width = 500, height = 400;
+  canvas.width=width;
+  canvas.height=height;
+  canvas.style.backgroundColor = "#b8b3ff";
+
+  ctx.fillStyle = "#bd7979"; // цвет заливки
+  ctx.strokeStyle = "#507299"; // цвет рамки
+  ctx.lineWidth = 4;
+
+
+  var fillRect = function (x, y, w, h) {
+    ctx.fillRect(x, y, w, h); // отрисовка закрашенного прямоугольника
+  };
+
+  var strokeRect = function (x, y, w, h) {
+    ctx.strokeRect(x, y, w, h); // отрисовка НЕзакрашенного прямоугольника
+  };
+
+
+
+      var mouse = {
+        x : 0,
+        y : 0
+      };
+      var selected = false;
+
+
+      var Rect = function (x, y, w, h){
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.selected = false;
+      };
+
+      Rect.prototype = {
+        draw : function (){
+          fillRect(this.x, this.y, this.w, this.h);
+        },
+        stroke : function (){
+          strokeRect(this.x, this.y, this.w, this.h);
+        },
+        select : function() {
+          this.selected = !this.selected;
+        }
+
+      };
+
+
+      /* создали прямоугольники */
+      var i = 0, rect = [];
+      for (; i<5; i++) {
+        rect.push(new Rect(50 + i * (50 + 10), 40, 50, 50) );
+      };
+
+
+      var isCursorInRect = function ( rect) {
+        return mouse.x > rect.x && mouse.x < rect.x + rect.w && mouse.y > rect.y && mouse.y < rect.y + rect.h;
+      };
+
+      canvas.onclick = function (e) {
+        var x = e.pageX,
+            y = e.pageY;
+
+        for (i in rect) {
+          if(isCursorInRect(rect[i]))
+          rect[i].select();
+        }
+
+      }
+/*****************************/
+/**
+ * "ИГРОВОЙ ЦИКЛ"
+ */
+      setInterval(function(){
+        ctx.clearRect(0, 0, width, height);
+
+        for (i in rect) {
+          rect[i].draw();
+
+          if(isCursorInRect(rect[i])){
+            rect[i].stroke();
+          }
+
+        }
+
+/* при отрисовки, у объекта rect[i] есть позиция x и y, а selected мы присвоили объект rect[i] */
+        if (selected){
+          selected.x = mouse.x - selected.w / 2;
+          selected.y = mouse.y - selected.h / 2;;
+        }
+
+
+      }, 30);
+/***************************/
+
+
+    window.onmousemove = function(e){
+      mouse.x = e.pageX;
+      mouse.y = e.pageY;
+    };
+
+    window.onmousedown = function(){
+      mouse.down = true;
+      if(!selected) {
+        var i;
+        for (i in rect) {
+          if(isCursorInRect(rect[i])){
+            selected = rect[i];
+          }
+
+        }
+      }
+    };
+
+    window.onmouseup = function(){
+      mouse.down = false;
+      selected = false;
+    }
+
+
+</script>
+
+  </body>
+</html>
