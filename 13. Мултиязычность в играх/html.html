@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      //
+// этот код лишь фрагмент , того как можно переключаться между массивами
+var lang = {
+  en : {
+    'new_game' : 'New Game',
+    'exit' : 'Exit'
+  },
+  ru : {
+    'new_game' : 'Новая игра',
+    'exit' : 'Выход'
+  }
+};
+var lng = 'ru'; // переменная ключ
+
+if  (/*если нажата клавиша*/) {
+     if { (lng == 'en') lng = 'ru'; }
+else if { (lng == 'ru') lng = 'en'; }
+
+
+/*добавить текст*/ = lang[lng].new_game; // можно через точку
+/*добавить текст*/ = lang[lng]['exit'];  // можно через квадратную скобку
+}
+
+    </script>
+  </body>
+</html>

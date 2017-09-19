@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script type="text/javascript">
+
+
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+var width = 500, height = 400;
+
+canvas.width=width;
+canvas.height=height;
+canvas.style.backgroundColor = "black";
+
+ctx.strokeStyle = "white"; // цвет рамки
+ctx.lineWidth = 1;
+
+var clear = function() {
+  ctx.clearRect(0, 0, width, height);
+}
+var fillRect = function (x, y, w, h) {
+  ctx.fillRect(x, y, w, h); // отрисовка закрашенного прямоугольника
+};
+var strokeRect = function (x, y, w, h) {
+  ctx.strokeRect(x, y, w, h); // отрисовка НЕзакрашенного прямоугольника
+};
+
+
+var Rect = function (x, y, w, h){
+  this.x = x;
+  this.y = y;
+  this.w = w;
+  this.h = h;
+
+  this.dx = 0;
+  this.dy = 0; // вертикальное падение
+
+  this.max = 10; // максимальное ускорение
+  this.dif = 0.1; // шаг за которое происходит ускорение // за 1 итерацию (setInterva в нашем случае)
+
+  this.fall = true;
+
+};
+Rect.prototype = {
+  draw : function (){ fillRect(this.x, this.y, this.w, this.h); },
+  move : function() {
+    this.x += this.dx;
+    this.y += this.dy;
+  },
+  grav: function(){
+
+    if (this.y + this.h / 1.5 > height - 100) {
+      this.max = 2;
+      this.dif = 0.01;
+    };
+    if(this.dy > this.max){
+      // this.dy = 0;
+      this.dy = this.dy / this.max;
+    }
+
+    if(!this.fall)return; /* наши кубики бесконечно прыгают, мы ввели новую переменную */
+    this.dy += this.dif < this.max ? this.dif : 0;
+    if (this.y + this.h>= height){
+      this.y = height - this.h;
+      this.dy /=2;     /**THIS.dy = 0**/
+      this.dy *= -1;   /**THIS.dy = 0**/
+    }
+
+    if (Math.abs(this.dy)<= this.dif*2 && this.y+this.h >= height) {
+      this.fall = false;
+      this.dy = 0;
+    }
+
+  }
+};
+
+
+var rect = [];
+var mouse = { x : 0, y : 0 };
+
+canvas.onmousemove = function(e){
+  mouse.x = e.pageX - 10; /* отняли padding у canvas */
+  mouse.y = e.pageY -10;
+};
+canvas.onclick = function() {
+  rect.push(new Rect(mouse.x - 15, mouse.y - 15, 30, 30));
+};
+
+setInterval(function(){
+  clear();
+  ctx.globalAlpha = 1; // Прозрачность
+  ctx.fillStyle = "yellow"; // цвет заливки
+
+  for (i in rect) {
+    rect[i].grav();
+    rect[i].move();
+    rect[i].draw();
+  }
+
+  strokeRect(mouse.x -15, mouse.y - 15, 30, 30); // циклическое создание рамки, там где находится курсор
+
+
+  ctx.globalAlpha = 0.3; // Прозрачность
+  ctx.fillStyle = "#66A3D2"; // цвет заливки
+  fillRect(0, height - 100, width, height);
+  ctx.fillStyle = "#25567B"; // цвет заливки
+  fillRect(0, height - 70, width, height);
+  ctx.fillStyle = "#033E6B"; // цвет заливки
+  fillRect(0, height - 30, width, height);
+}, 1000/60);
+
+
+
+
+    </script>
+  </body>
+</html>
