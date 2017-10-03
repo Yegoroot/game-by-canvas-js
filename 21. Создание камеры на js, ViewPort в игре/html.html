@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+<canvas id="canvas"></canvas>
+<script type="text/javascript">
+
+/**
+ * Суть урока:
+ * Для движения камеры, мы не трогаем координаты объекта, но мы
+ * изменяем положение отрисовки
+ * т.е ОТрисовываем прямоугольники в той позиции на которую сбдигается камера camera.x, camera.y
+ */
+
+var cnv = document.getElementById('canvas');
+var ctx = cnv.getContext('2d');
+cnv.width = 500;
+cnv.height = 300;
+
+var clear = function () {
+  ctx.fillStyle = '#E3E3E3';
+  ctx.fillRect(0, 0, 500, 300);
+};
+
+var rect = function (x, y, w, h, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(-camera.x + x, -camera.y + y, w, h);
+};
+
+var camera = {
+  x:0,
+  y:0,
+  move: function (x, y) {
+      this.x += x;
+      this.y +=y;
+  }
+}
+
+var x = 100;
+var y = 20;
+
+setInterval(function(){
+  clear();
+  rect(20, y+=0.2, 50,70, '#DD5656');
+  rect(x, 60, 70,30, '#56DD79');
+  camera.move(-0.5, 0);
+}, 1000/60)
+</script>
+  </body>
+</html>

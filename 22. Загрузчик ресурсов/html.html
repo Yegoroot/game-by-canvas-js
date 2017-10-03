@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+<div id="count"></div>
+
+<script type="text/javascript">
+
+var allCount = 0; // кол- всех картинок
+var loadCount = 0; // кол-во загруженных картинок
+var list = [
+  'https://s1.1zoom.ru/big0/930/Coast_Sunrises_and_sunsets_Waves_USA_Ocean_Kaneohe_521540_1280x775.jpg',
+  'http://minionomaniya.ru/wp-content/uploads/2016/01/%D0%BC%D0%B8%D0%BD%D1%8C%D0%BE%D0%BD%D1%8B-%D0%BF%D1%80%D0%B8%D0%BA%D0%BE%D0%BB%D1%8B-%D0%BA%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8.jpg',
+  'http://dom-cvety.com/photo/13-0/1569_rrrre-1920.jpg',
+  'https://s00.yaplakal.com/pics/userpic/6/7/8/av-656876.jpg',
+  'http://mirpozitiva.ru/uploads/posts/2016-08/1472042512_05.jpg',
+  'https://telegraf.com.ua/files/2016/11/cat.jpg',
+  'http://kakzachem.ru/wp-content/uploads/2016/06/04-22.jpg',
+  'https://s00.yaplakal.com/pics/pics_original/1/3/5/10075531.jpg',
+  'http://www.bugaga.ru/uploads/posts/2016-03/1458735252_kartinki-22.jpg',
+  'http://chto-takoe-lyubov.net/images/stories/Romantika/romantika-018.jpg',
+  'http://bipbap.ru/wp-content/uploads/2017/08/29062339.jpg',
+  'https://counter-strike.com.ua/uploads/images/wallpapers/counter_strike_global_offensive/counter_strike_global_offensive_100.jpg',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdYxVpaC4WWI5ULQWjQ4ylYGuL7LQK3vtxQEf08TYe6Bq3Vsq-ug'
+];
+
+var load = function () {
+  var i, img;
+  for (i=0 ; i<list.length ; i++) {
+    allCount++;
+    img = document.createElement('img');
+    img.onload = function () {
+      loadCount++;
+    };
+    img.src = list[i];
+  }
+};
+
+load();
+var int = setInterval(function () {
+  document.getElementById('count').innerHTML = 'Загрузка ' + (loadCount/allCount) * 100 + ' % ';
+  if (allCount == loadCount){
+    console.log('1');
+    clearInterval(int);
+  }
+}, 1000/60)
+
+</script>
+
+  </body>
+</html>
